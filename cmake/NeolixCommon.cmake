@@ -1,0 +1,7 @@
+set(NEOLIXCOMMON_ROOT "${CMAKE_SOURCE_DIR}/../opt")
+set(NEOLIXCOMMON_INCLUDE_DIR "${NEOLIXCOMMON_ROOT}/include")
+set(NEOLIXCOMMON_LIB_DIR "${NEOLIXCOMMON_ROOT}/lib")
+
+include_directories(${NEOLIXCOMMON_INCLUDE_DIR})
+include_directories(${NEOLIXCOMMON_INCLUDE_DIR}/neolix_common)
+link_directories(${NEOLIXCOMMON_LIB_DIR})

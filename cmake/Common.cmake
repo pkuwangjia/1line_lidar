@@ -1,0 +1,8 @@
+set(COMMON_ROOT "${CMAKE_SOURCE_DIR}/../opt")
+set(COMMON_INCLUDE_DIR "${COMMON_ROOT}/include/common")
+set(COMMON_LIB_DIR "${COMMON_ROOT}/lib")
+file(GLOB LIBRARIES "${COMMON_LIB_DIR}/*.so")
+set(COMMON_LIBRARIES ${LIBRARIES} CACHE INTERNAL "COMMON_LIBRARIES")
+include_directories(${COMMON_INCLUDE_DIR})
+include_directories(${COMMON_INCLUDE_DIR}/common)
+link_directories(${COMMON_LIB_DIR})
