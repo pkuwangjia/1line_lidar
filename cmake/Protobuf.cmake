@@ -18,7 +18,7 @@ set(PROTOBUF_INCLUDE_DIR ${PROTOBUF_ROOT}/include CACHE INTERNAL "PROTOBUF_INCLU
 set(PROTOBUF_PROTOC_EXECUTABLE ${PROTOBUF_ROOT}/bin/protoc CACHE INTERNAL "PROTOBUF_PROTOC_EXECUTABLE")
 set(PROTOC ${PROTOBUF_PROTOC_EXECUTABLE} CACHE INTERNAL "PROTOC")
 include_directories(${PROTOBUF_INCLUDE_DIR})
-link_directories(${PROTOBUF_LIBRARY_DIR})
+# link_directories(${PROTOBUF_LIBRARY_DIR})
 
 #  ====================================================================
 #

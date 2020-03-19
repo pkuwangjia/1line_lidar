@@ -20,17 +20,17 @@ set(WORK_ROOT ${CMAKE_SOURCE_DIR})
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_SOURCE_DIR}/cmake/Modules)
 include(${CMAKE_SOURCE_DIR}/cmake/Boost.cmake)
 # # Cyber
-# include(${CMAKE_SOURCE_DIR}/cmake/Cyber.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Cyber.cmake)
 # # Common
-# include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/Common.cmake)
 
-# set(PROTOBUF_ROOT "../gears/x86_64" CACHE INTERNAL "PROTOBUF_ROOT")
-# include(${CMAKE_SOURCE_DIR}/cmake/Protobuf.cmake)
+set(PROTOBUF_ROOT "../gears/x86_64" CACHE INTERNAL "PROTOBUF_ROOT")
+include(${CMAKE_SOURCE_DIR}/cmake/Protobuf.cmake)
 # # GLog
-# include(${CMAKE_SOURCE_DIR}/cmake/GLog.cmake)
+include(${CMAKE_SOURCE_DIR}/cmake/GLog.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/GFlags.cmake)
 include(${CMAKE_SOURCE_DIR}/cmake/PCL.cmake)
-include(${CMAKE_SOURCE_DIR}/cmake/OpenCV.cmake)
+# include(${CMAKE_SOURCE_DIR}/cmake/OpenCV.cmake)
 
 message("pcllibrary:${PCL_LIBRARY_DIRS}")
 message("pcllibrary:${PCL_INCLUDE_DIRS}")
@@ -42,10 +42,10 @@ aux_source_directory(${PROJECT_SOURCE_DIR} PROJ_SRCS)
 
 add_executable(${PROJECT_NAME}  ${PROJ_SRCS})
 target_link_libraries(${PROJECT_NAME} 
-    # cyber
-    # neolix_common
-    # protobuf
-    # glog
+/home/caros/Desktop/CyberRT/opt/lib/libcyber.so
+    /home/caros/Desktop/CyberRT/opt/lib/libneolix_common.so
+    /home/caros/Desktop/CyberRT/gears/x86_64/lib/libprotobuf.so
+    glog
     gflags
     boost_system
     boost_thread
@@ -53,6 +53,46 @@ target_link_libraries(${PROJECT_NAME}
     pcl_common
     pcl_io
     pcl_visualization
+    X11   
+        # opencv_bgsegm
+        # opencv_bioinspired
+        # opencv_calib3d
+        # opencv_ccalib
+        # opencv_core
+        # opencv_datasets
+        # opencv_dpm
+        # opencv_face
+        # opencv_features2d
+        # opencv_flann
+        # opencv_fuzzy
+        # opencv_hdf
+        # opencv_highgui
+        # opencv_imgcodecs
+        # opencv_imgproc
+        # opencv_line_descriptor
+        # opencv_ml
+        # opencv_objdetect
+        # opencv_optflow
+        # opencv_phase_unwrapping
+        # opencv_photo
+        # opencv_plot
+        # opencv_reg
+        # opencv_rgbd
+        # opencv_saliency
+        # opencv_shape
+        # opencv_stereo
+        # opencv_stitching
+        # opencv_structured_light
+        # opencv_superres
+        # opencv_surface_matching
+        # opencv_text
+        # opencv_video
+        # opencv_videoio
+        # opencv_videostab
+        # opencv_viz
+        # opencv_ximgproc
+        # opencv_xobjdetect
+        # opencv_xphoto
     )
 
 install(TARGETS ${PROJECT_NAME} 
