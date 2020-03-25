@@ -18,10 +18,14 @@ DEFINE_int32(minpts, 3, "");
 DEFINE_double(neighbourhood, 4, "");
 DEFINE_double(width, 1.12, "");
 DEFINE_double(tohead, 0.3, "");
+DEFINE_double(distance, 3, "");
+
 pcl::PointCloud<pcl::PointXYZ>::Ptr part(new pcl::PointCloud<pcl::PointXYZ>);
 pcl::PointCloud<pcl::PointXYZ>::Ptr cloud(new pcl::PointCloud<pcl::PointXYZ>);
 pcl::PointCloud<pcl::PointXYZ>::Ptr core(new pcl::PointCloud<pcl::PointXYZ>);
 std::vector<pcl::PointCloud<pcl::PointXYZ>::Ptr> clusters;
+pcl::PointCloud<pcl::PointXYZ>::Ptr obs;
+
 pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> green(
     cloud, 0, 255, 0);  // green
 pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> red(core, 255,
@@ -33,8 +37,6 @@ pcl::visualization::PointCloudColorHandlerCustom<pcl::PointXYZ> white(
 boost::shared_ptr<pcl::visualization::PCLVisualizer> viewer(
     new pcl::visualization::PCLVisualizer(
         "test"));  //创建可视化窗口，名字叫做`test`
-
-pcl::PointCloud<pcl::PointXYZ>::Ptr obs;
 
 // X11 window
 #define WIDTH 1280
@@ -123,12 +125,14 @@ void Dbscan(pcl::PointCloud<pcl::PointXYZ>::Ptr &cloud) {
     if (Distance(cluster->points.back(), core->points[i]) <
         FLAGS_neighbourhood) {
       cluster->push_back(core->points[i]);
-
+      if (i == core->size() - 1) {
+        clusters.push_back(cluster);
+        cluster.reset(new pcl::PointCloud<pcl::PointXYZ>);
+        break;
+      }
     } else {
-      pcl::PointCloud<pcl::PointXYZ>::Ptr new_cluster(
-          new pcl::PointCloud<pcl::PointXYZ>);
       clusters.push_back(cluster);
-      cluster = new_cluster;
+      cluster.reset(new pcl::PointCloud<pcl::PointXYZ>);
     }
   }
 
@@ -143,7 +147,7 @@ void ImageCallback(const std::shared_ptr<adu::common::sensor::Image> &msg) {
   //                       const_cast<char *>(msg->data().c_str()));
   // cv::imshow("Depthimage", img);
   for (int i = 0; i < WIDTH * HEIGHT; i++) {
-    buffer[4 * i] = 0;
+    buffer[4 * i] = msg->data()[i];
     buffer[4 * i + 1] = msg->data()[i];
     buffer[4 * i + 2] = msg->data()[i];
     buffer[4 * i + 3] = msg->data()[i];
@@ -207,8 +211,7 @@ void PointsCallback(
   }
   // cut
   for (auto &pt : *frame) {
-    if (abs(pt.x) > (FLAGS_width / 2) && abs(pt.y) > FLAGS_tohead)
-      cut->push_back(pt);
+    if (pt.y < -FLAGS_tohead) cut->push_back(pt);
   }
   Dbscan(cut);
   viewer->removePointCloud("origin");
